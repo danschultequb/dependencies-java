@@ -1,12 +1,12 @@
 package qub;
 
-public interface QubDependenciesParametersTests
+public interface QubDependenciesUpdateParametersTests
 {
     static void test(TestRunner runner)
     {
         PreCondition.assertNotNull(runner, "runner");
 
-        runner.testGroup(QubDependenciesParameters.class, () ->
+        runner.testGroup(QubDependenciesUpdateParameters.class, () ->
         {
             runner.testGroup("constructor()", () ->
             {
@@ -17,7 +17,7 @@ public interface QubDependenciesParametersTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-                    test.assertThrows(() -> new QubDependenciesParameters(output, verbose, folder, environmentVariables),
+                    test.assertThrows(() -> new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables),
                         new PreConditionFailure("output cannot be null."));
                 });
 
@@ -28,7 +28,7 @@ public interface QubDependenciesParametersTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-                    test.assertThrows(() -> new QubDependenciesParameters(output, verbose, folder, environmentVariables),
+                    test.assertThrows(() -> new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables),
                         new PreConditionFailure("verbose cannot be null."));
                 });
 
@@ -38,7 +38,7 @@ public interface QubDependenciesParametersTests
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final Folder folder = null;
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-                    test.assertThrows(() -> new QubDependenciesParameters(output, verbose, folder, environmentVariables),
+                    test.assertThrows(() -> new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables),
                         new PreConditionFailure("folder cannot be null."));
                 });
 
@@ -49,7 +49,7 @@ public interface QubDependenciesParametersTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
                     final EnvironmentVariables environmentVariables = null;
-                    test.assertThrows(() -> new QubDependenciesParameters(output, verbose, folder, environmentVariables),
+                    test.assertThrows(() -> new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables),
                         new PreConditionFailure("environmentVariables cannot be null."));
                 });
 
@@ -60,7 +60,7 @@ public interface QubDependenciesParametersTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-                    final QubDependenciesParameters parameters = new QubDependenciesParameters(output, verbose, folder, environmentVariables);
+                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
                     test.assertSame(output, parameters.getOutput());
                     test.assertSame(verbose, parameters.getVerbose());
                     test.assertSame(folder, parameters.getFolder());

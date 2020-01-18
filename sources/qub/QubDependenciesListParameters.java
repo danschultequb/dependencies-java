@@ -1,13 +1,13 @@
 package qub;
 
-public class QubDependenciesParameters
+public class QubDependenciesListParameters
 {
     private final CharacterWriteStream output;
     private final VerboseCharacterWriteStream verbose;
     private final Folder folder;
     private final EnvironmentVariables environmentVariables;
 
-    public QubDependenciesParameters(CharacterWriteStream output, VerboseCharacterWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
+    public QubDependenciesListParameters(CharacterWriteStream output, VerboseCharacterWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
     {
         PreCondition.assertNotNull(output, "output");
         PreCondition.assertNotNull(verbose, "verbose");
