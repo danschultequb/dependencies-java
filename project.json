@@ -1,1 +1,17 @@
-{"publisher":"qub","project":"qub-java-dependencies","version":"4","java":{"mainClass":"qub.QubDependencies","shortcutName":"qub-dependencies","version":"1.8","dependencies":[{"publisher":"qub","project":"projectjson-java","version":"7"}]}}
+{
+  "publisher": "qub",
+  "project": "qub-java-dependencies",
+  "version": "4",
+  "java": {
+    "mainClass": "qub.QubDependencies",
+    "shortcutName": "qub-dependencies",
+    "version": "1.8",
+    "dependencies": [
+      {
+        "publisher": "qub",
+        "project": "projectjson-java",
+        "version": "7"
+      }
+    ]
+  }
+}
