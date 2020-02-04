@@ -90,7 +90,7 @@ public interface QubDependenciesList
                         }
                         else
                         {
-                            final QubFolder qubFolder = new QubFolder(folder.getFileSystem(), qubHomePath);
+                            final QubFolder qubFolder = QubFolder.create(folder.getFileSystem().getFolder(qubHomePath).await());
                             final int dependencyCount = dependencies.getCount();
                             output.writeLine("Found " + dependencyCount + " " + (dependencyCount == 1 ? "dependency" : "dependencies") + ":").await();
                             final IndentedCharacterWriteStream indentedOutput = new IndentedCharacterWriteStream(output);

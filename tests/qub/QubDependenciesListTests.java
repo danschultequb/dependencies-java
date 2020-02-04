@@ -227,7 +227,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
@@ -262,7 +262,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
@@ -306,7 +306,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
@@ -359,7 +359,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
@@ -404,7 +404,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
@@ -458,7 +458,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     final Folder folder = rootFolder.createFolder("project/").await();
                     folder.setFileContentsAsString("project.json", new ProjectJSON()
                         .setJava(new ProjectJSONJava()
@@ -486,7 +486,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
-                    final QubFolder qubFolder = new QubFolder(rootFolder.getFolder("qub").await());
+                    final QubFolder qubFolder = QubFolder.create(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")

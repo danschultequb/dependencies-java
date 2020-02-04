@@ -6,6 +6,7 @@ public class QubDependenciesUpdateParameters
     private final VerboseCharacterWriteStream verbose;
     private final Folder folder;
     private final EnvironmentVariables environmentVariables;
+    private boolean intellij;
 
     public QubDependenciesUpdateParameters(CharacterWriteStream output, VerboseCharacterWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
     {
@@ -18,6 +19,7 @@ public class QubDependenciesUpdateParameters
         this.verbose = verbose;
         this.folder = folder;
         this.environmentVariables = environmentVariables;
+        this.intellij = false;
     }
 
     public CharacterWriteStream getOutput()
@@ -38,5 +40,16 @@ public class QubDependenciesUpdateParameters
     public EnvironmentVariables getEnvironmentVariables()
     {
         return this.environmentVariables;
+    }
+
+    public boolean getIntellij()
+    {
+        return this.intellij;
+    }
+
+    public QubDependenciesUpdateParameters setIntellij(boolean intellij)
+    {
+        this.intellij = intellij;
+        return this;
     }
 }

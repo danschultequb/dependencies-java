@@ -14,6 +14,8 @@ public interface QubDependenciesUpdate
         final CommandLineParameters parameters = process.createCommandLineParameters()
             .setApplicationName(QubDependencies.getActionFullName(QubDependenciesUpdate.actionName))
             .setApplicationDescription(QubDependenciesUpdate.actionDescription);
+        final CommandLineParameterBoolean intellijParameter = parameters.addBoolean("intellij", true)
+            .setDescription("Whether or not to update IntelliJ project files.");
         final CommandLineParameterProfiler profilerParameter = parameters.addProfiler(process, QubDependenciesUpdate.class);
         final CommandLineParameterVerbose verboseParameter = parameters.addVerbose(process);
         final CommandLineParameterHelp helpParameter = parameters.addHelp();
@@ -26,8 +28,10 @@ public interface QubDependenciesUpdate
             final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
             final Folder folder = process.getCurrentFolder().await();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
+            final boolean intellij = intellijParameter.getValue().await();
 
-            result = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
+            result = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables)
+                .setIntellij(intellij);
         }
 
         return result;
@@ -43,6 +47,7 @@ public interface QubDependenciesUpdate
         final VerboseCharacterWriteStream verbose = parameters.getVerbose();
         final Folder folder = parameters.getFolder();
         final EnvironmentVariables environmentVariables = parameters.getEnvironmentVariables();
+        final boolean intellij = parameters.getIntellij();
 
         output.writeLine("Updating dependencies for " + folder + "...").await();
 
@@ -90,14 +95,14 @@ public interface QubDependenciesUpdate
                         }
                         else
                         {
-                            final QubFolder qubFolder = new QubFolder(folder.getFileSystem(), qubHomePath);
+                            final QubFolder qubFolder = QubFolder.create(folder.getFileSystem().getFolder(qubHomePath).await());
                             final int dependencyCount = dependencies.getCount();
                             output.writeLine("Found " + dependencyCount + " " + (dependencyCount == 1 ? "dependency" : "dependencies") + ":").await();
                             final IndentedCharacterWriteStream indentedOutput = new IndentedCharacterWriteStream(output);
+                            final List<ProjectSignature> newDependencies = List.create();
                             indentedOutput.indent(() ->
                             {
                                 boolean dependenciesChanged = false;
-                                final List<ProjectSignature> newDependencies = List.create();
                                 for (final ProjectSignature dependency : dependencies)
                                 {
                                     indentedOutput.write(dependency.toString()).await();
@@ -126,7 +131,7 @@ public interface QubDependenciesUpdate
                                         if (Comparer.equal(dependency.getVersion(), latestVersionFolder.getVersion()))
                                         {
                                             newDependencies.add(dependency);
-                                            indentedOutput.writeLine(" - No Updates").await();
+                                            indentedOutput.writeLine(" - No updates").await();
                                         }
                                         else
                                         {
@@ -144,6 +149,114 @@ public interface QubDependenciesUpdate
                                     projectJsonFile.setContentsAsString(projectJSON.toString(JSONFormat.pretty)).await();
                                 }
                             });
+
+                            if (intellij)
+                            {
+                                final Iterable<File> intellijProjectFiles = folder.getFiles().await()
+                                    .where((File file) -> Comparer.equal(file.getFileExtension(), ".iml"));
+                                if (intellijProjectFiles.any())
+                                {
+                                    indentedOutput.writeLine("Updating IntelliJ project files...").await();
+                                    indentedOutput.indent(() ->
+                                    {
+                                        if (!intellijProjectFiles.any())
+                                        {
+                                            indentedOutput.writeLine("No IntelliJ project files found.").await();
+                                        }
+                                        else
+                                        {
+                                            for (final File intellijProjectFile : intellijProjectFiles)
+                                            {
+                                                final IntellijModule intellijModule = IntellijModule.parse(intellijProjectFile)
+                                                    .catchError(PreConditionFailure.class, () -> indentedOutput.writeLine("Invalid Intellij Module file: " + intellijProjectFile).await())
+                                                    .await();
+                                                if (intellijModule != null)
+                                                {
+                                                    final List<ProjectSignature> dependenciesToAddToModule = projectJSONJava.getTransitiveDependencies(qubFolder).toList();
+                                                    final Iterable<IntellijModuleLibrary> currentModuleLibraries = intellijModule.getModuleLibraries().toList();
+
+                                                    intellijModule.clearModuleLibraries();
+
+                                                    for (final IntellijModuleLibrary moduleLibrary : currentModuleLibraries)
+                                                    {
+                                                        final String classesUrl = moduleLibrary.getClassesUrls().first();
+                                                        if (Strings.isNullOrEmpty(classesUrl) || !classesUrl.startsWith("jar://"))
+                                                        {
+                                                            intellijModule.addModuleLibrary(moduleLibrary);
+                                                        }
+                                                        else
+                                                        {
+                                                            final int startIndex = "jar://".length();
+                                                            int endIndex = classesUrl.length();
+                                                            if (classesUrl.endsWith("!/"))
+                                                            {
+                                                                endIndex -= "!/".length();
+                                                            }
+                                                            final Path compiledSourcesFilePath = Path.parse(classesUrl.substring(startIndex, endIndex));
+                                                            if (!qubFolder.isAncestorOf(compiledSourcesFilePath).await())
+                                                            {
+                                                                indentedOutput.writeLine(compiledSourcesFilePath + " - No updates").await();
+                                                                intellijModule.addModuleLibrary(moduleLibrary);
+                                                            }
+                                                            else
+                                                            {
+                                                                final Path compiledSourcesRelativeFilePath = compiledSourcesFilePath.relativeTo(qubFolder);
+                                                                final Indexable<String> segments = compiledSourcesRelativeFilePath.getSegments();
+                                                                final String publisher = segments.get(0);
+                                                                final String project = segments.get(1);
+                                                                final String version = segments.get(2);
+                                                                final ProjectSignature currentQubDependency = new ProjectSignature(publisher, project, version);
+
+                                                                final ProjectSignature newQubDependency = dependenciesToAddToModule.removeFirst(currentQubDependency::equalsIgnoreVersion);
+                                                                if (newQubDependency == null)
+                                                                {
+                                                                    indentedOutput.writeLine(currentQubDependency + " - Removed").await();
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (newQubDependency.equals(currentQubDependency))
+                                                                    {
+                                                                        indentedOutput.writeLine(currentQubDependency + " - No updates").await();
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        indentedOutput.writeLine(currentQubDependency + " - Updated to " + newQubDependency).await();
+                                                                    }
+
+                                                                    final QubProjectVersionFolder projectVersionFolder = qubFolder.getProjectVersionFolder(
+                                                                        newQubDependency.getPublisher(),
+                                                                        newQubDependency.getProject(),
+                                                                        newQubDependency.getVersion())
+                                                                        .await();
+                                                                    intellijModule.addModuleLibrary(IntellijModuleLibrary.create()
+                                                                        .addClassesUrl("jar://" + projectVersionFolder.getCompiledSourcesFile().await().toString() + "!/")
+                                                                        .addSourcesUrl("jar://" + projectVersionFolder.getSourcesFile().await().toString() + "!/"));
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    for (final ProjectSignature dependencyToAddToModule : dependenciesToAddToModule)
+                                                    {
+                                                        indentedOutput.writeLine(dependencyToAddToModule + " - Added").await();
+
+                                                        final QubProjectVersionFolder projectVersionFolder = qubFolder.getProjectVersionFolder(
+                                                            dependencyToAddToModule.getPublisher(),
+                                                            dependencyToAddToModule.getProject(),
+                                                            dependencyToAddToModule.getVersion())
+                                                            .await();
+                                                        intellijModule.addModuleLibrary(IntellijModuleLibrary.create()
+                                                            .addClassesUrl("jar://" + projectVersionFolder.getCompiledSourcesFile().await().toString() + "!/")
+                                                            .addSourcesUrl("jar://" + projectVersionFolder.getSourcesFile().await().toString() + "!/"));
+                                                    }
+
+                                                    intellijProjectFile.setContentsAsString(intellijModule.toString(XMLFormat.pretty)).await();
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
                         }
                     }
                 }
