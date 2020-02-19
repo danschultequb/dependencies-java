@@ -17,7 +17,7 @@ public interface QubDependenciesTests
                 });
             });
 
-            runner.testGroup("run(Process)", () ->
+            runner.testGroup("run(QubProcess)", () ->
             {
                 runner.test("with null", (Test test) ->
                 {
@@ -28,7 +28,7 @@ public interface QubDependenciesTests
                 runner.test("with no action", (Test test) ->
                 {
                     final InMemoryCharacterStream output = new InMemoryCharacterStream();
-                    try (final Process process = Process.create())
+                    try (final QubProcess process = QubProcess.create())
                     {
                         process.setOutputCharacterWriteStream(output);
 
@@ -52,7 +52,7 @@ public interface QubDependenciesTests
                 runner.test("with -?", (Test test) ->
                 {
                     final InMemoryCharacterStream output = new InMemoryCharacterStream();
-                    try (final Process process = Process.create("-?"))
+                    try (final QubProcess process = QubProcess.create("-?"))
                     {
                         process.setOutputCharacterWriteStream(output);
 

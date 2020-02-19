@@ -18,7 +18,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with no arguments", (Test test) ->
                 {
-                    try (final Process process = Process.create())
+                    try (final QubProcess process = QubProcess.create())
                     {
                         final InMemoryCharacterStream output = new InMemoryCharacterStream();
                         process.setOutputCharacterWriteStream(output);
@@ -34,7 +34,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with -?", (Test test) ->
                 {
-                    try (final Process process = Process.create("-?"))
+                    try (final QubProcess process = QubProcess.create("-?"))
                     {
                         final InMemoryCharacterStream output = new InMemoryCharacterStream();
                         process.setOutputCharacterWriteStream(output);

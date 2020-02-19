@@ -5,7 +5,7 @@ public interface QubDependenciesUpdate
     String actionName = "update";
     String actionDescription = "Update the dependencies of a project.";
 
-    static QubDependenciesUpdateParameters getParameters(Process process)
+    static QubDependenciesUpdateParameters getParameters(QubProcess process)
     {
         PreCondition.assertNotNull(process, "process");
 

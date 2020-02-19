@@ -5,7 +5,7 @@ public interface QubDependenciesList
     String actionName = "list";
     String actionDescription = "List the dependencies of a project.";
 
-    static QubDependenciesListParameters getParameters(Process process)
+    static QubDependenciesListParameters getParameters(QubProcess process)
     {
         PreCondition.assertNotNull(process, "process");
 
