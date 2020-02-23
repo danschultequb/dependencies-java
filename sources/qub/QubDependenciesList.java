@@ -90,7 +90,7 @@ public interface QubDependenciesList
                         }
                         else
                         {
-                            final QubFolder qubFolder = QubFolder.create(folder.getFileSystem().getFolder(qubHomePath).await());
+                            final QubFolder qubFolder = QubFolder.get(folder.getFileSystem().getFolder(qubHomePath).await());
                             final int dependencyCount = dependencies.getCount();
                             output.writeLine("Found " + dependencyCount + " " + (dependencyCount == 1 ? "dependency" : "dependencies") + ":").await();
                             final IndentedCharacterWriteStream indentedOutput = new IndentedCharacterWriteStream(output);
@@ -111,10 +111,17 @@ public interface QubDependenciesList
     {
         output.indent(() ->
         {
-            final File dependencyProjectJsonFile = qubFolder.getProjectJSONFile(
+            File dependencyProjectJsonFile = qubFolder.getProjectJSONFile2(
                 dependency.getPublisher(),
                 dependency.getProject(),
                 dependency.getVersion()).await();
+            if (!dependencyProjectJsonFile.exists().await())
+            {
+                dependencyProjectJsonFile = qubFolder.getProjectJSONFile(
+                    dependency.getPublisher(),
+                    dependency.getProject(),
+                    dependency.getVersion()).await();
+            }
             final ProjectJSON dependencyProjectJson = ProjectJSON.parse(dependencyProjectJsonFile)
                 .catchError(FileNotFoundException.class)
                 .await();
