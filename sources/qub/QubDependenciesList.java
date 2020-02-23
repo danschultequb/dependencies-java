@@ -111,17 +111,10 @@ public interface QubDependenciesList
     {
         output.indent(() ->
         {
-            File dependencyProjectJsonFile = qubFolder.getProjectJSONFile2(
+            final File dependencyProjectJsonFile = qubFolder.getProjectJSONFile(
                 dependency.getPublisher(),
                 dependency.getProject(),
                 dependency.getVersion()).await();
-            if (!dependencyProjectJsonFile.exists().await())
-            {
-                dependencyProjectJsonFile = qubFolder.getProjectJSONFile(
-                    dependency.getPublisher(),
-                    dependency.getProject(),
-                    dependency.getVersion()).await();
-            }
             final ProjectJSON dependencyProjectJson = ProjectJSON.parse(dependencyProjectJsonFile)
                 .catchError(FileNotFoundException.class)
                 .await();

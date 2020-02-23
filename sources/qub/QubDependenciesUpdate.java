@@ -110,11 +110,7 @@ public interface QubDependenciesUpdate
                                     final QubProjectFolder projectFolder = qubFolder.getProjectFolder(dependency.getPublisher(), dependency.getProject()).await();
                                     QubProjectVersionFolder latestVersionFolder = projectFolder.getProjectVersionFolder(dependency.getVersion()).await();
                                     Integer latestVersionFolderNumber = Integers.parse(latestVersionFolder.getVersion()).await();
-                                    Iterable<QubProjectVersionFolder> versionFolders = projectFolder.getProjectVersionFolders2().await();
-                                    if (!versionFolders.any())
-                                    {
-                                        versionFolders = projectFolder.getProjectVersionFolders().await();
-                                    }
+                                    final Iterable<QubProjectVersionFolder> versionFolders = projectFolder.getProjectVersionFolders().await();
                                     if (!versionFolders.any())
                                     {
                                         newDependencies.add(dependency);
@@ -231,26 +227,13 @@ public interface QubDependenciesUpdate
                                                                         indentedOutput.writeLine(currentQubDependency + " - Updated to " + newQubDependency).await();
                                                                     }
 
-                                                                    QubProjectVersionFolder projectVersionFolder = qubFolder.getProjectVersionFolder2(
+                                                                    final QubProjectVersionFolder projectVersionFolder = qubFolder.getProjectVersionFolder(
                                                                         newQubDependency.getPublisher(),
                                                                         newQubDependency.getProject(),
                                                                         newQubDependency.getVersion()).await();
-                                                                    if (projectVersionFolder.exists().await())
-                                                                    {
-                                                                        intellijModule.addModuleLibrary(IntellijModuleLibrary.create()
-                                                                            .addClassesUrl("jar://" + projectVersionFolder.getCompiledSourcesFile2().await().toString() + "!/")
-                                                                            .addSourcesUrl("jar://" + projectVersionFolder.getSourcesFile2().await().toString() + "!/"));
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        projectVersionFolder = qubFolder.getProjectVersionFolder(
-                                                                            newQubDependency.getPublisher(),
-                                                                            newQubDependency.getProject(),
-                                                                            newQubDependency.getVersion()).await();
-                                                                        intellijModule.addModuleLibrary(IntellijModuleLibrary.create()
-                                                                            .addClassesUrl("jar://" + projectVersionFolder.getCompiledSourcesFile().await().toString() + "!/")
-                                                                            .addSourcesUrl("jar://" + projectVersionFolder.getSourcesFile().await().toString() + "!/"));
-                                                                    }
+                                                                    intellijModule.addModuleLibrary(IntellijModuleLibrary.create()
+                                                                        .addClassesUrl("jar://" + projectVersionFolder.getCompiledSourcesFile().await().toString() + "!/")
+                                                                        .addSourcesUrl("jar://" + projectVersionFolder.getSourcesFile().await().toString() + "!/"));
                                                                 }
                                                             }
                                                         }
