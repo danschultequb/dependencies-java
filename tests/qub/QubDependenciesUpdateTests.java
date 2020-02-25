@@ -1237,7 +1237,7 @@ public interface QubDependenciesUpdateTests
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
-                    qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
+                    qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
                             .setProject("b")
@@ -1313,7 +1313,7 @@ public interface QubDependenciesUpdateTests
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
-                    qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
+                    qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
                             .setProject("b")
@@ -1469,7 +1469,7 @@ public interface QubDependenciesUpdateTests
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
-                    qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
+                    qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
                             .setProject("b")
@@ -1549,7 +1549,7 @@ public interface QubDependenciesUpdateTests
                     fileSystem.createRoot("/").await();
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
-                    qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
+                    qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
                         new ProjectJSON()
                             .setPublisher("a")
                             .setProject("b")

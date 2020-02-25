@@ -108,26 +108,14 @@ public interface QubDependenciesUpdate
                                     indentedOutput.write(dependency.toString()).await();
 
                                     final QubProjectFolder projectFolder = qubFolder.getProjectFolder(dependency.getPublisher(), dependency.getProject()).await();
-                                    QubProjectVersionFolder latestVersionFolder = projectFolder.getProjectVersionFolder(dependency.getVersion()).await();
-                                    Integer latestVersionFolderNumber = Integers.parse(latestVersionFolder.getVersion()).await();
-                                    final Iterable<QubProjectVersionFolder> versionFolders = projectFolder.getProjectVersionFolders().await();
-                                    if (!versionFolders.any())
+                                    final QubProjectVersionFolder latestVersionFolder = projectFolder.getLatestProjectVersionFolder().catchError().await();
+                                    if (latestVersionFolder == null)
                                     {
                                         newDependencies.add(dependency);
                                         indentedOutput.writeLine(" - Not Found").await();
                                     }
                                     else
                                     {
-                                        for (QubProjectVersionFolder versionFolder : versionFolders)
-                                        {
-                                            final Integer versionFolderNumber = Integers.parse(versionFolder.getVersion()).await();
-                                            if (Comparer.lessThan(latestVersionFolderNumber, versionFolderNumber))
-                                            {
-                                                latestVersionFolder = versionFolder;
-                                                latestVersionFolderNumber = versionFolderNumber;
-                                            }
-                                        }
-
                                         if (Comparer.equal(dependency.getVersion(), latestVersionFolder.getVersion()))
                                         {
                                             newDependencies.add(dependency);
@@ -159,14 +147,8 @@ public interface QubDependenciesUpdate
                                     indentedOutput.writeLine("Updating IntelliJ project files...").await();
                                     indentedOutput.indent(() ->
                                     {
-                                        if (!intellijProjectFiles.any())
+                                        for (final File intellijProjectFile : intellijProjectFiles)
                                         {
-                                            indentedOutput.writeLine("No IntelliJ project files found.").await();
-                                        }
-                                        else
-                                        {
-                                            for (final File intellijProjectFile : intellijProjectFiles)
-                                            {
                                                 final IntellijModule intellijModule = IntellijModule.parse(intellijProjectFile)
                                                     .catchError(PreConditionFailure.class, () -> indentedOutput.writeLine("Invalid Intellij Module file: " + intellijProjectFile).await())
                                                     .await();
@@ -256,7 +238,6 @@ public interface QubDependenciesUpdate
                                                     intellijProjectFile.setContentsAsString(intellijModule.toString(XMLFormat.pretty)).await();
                                                 }
                                             }
-                                        }
                                     });
                                 }
                             }
