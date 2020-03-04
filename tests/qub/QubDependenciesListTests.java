@@ -108,7 +108,7 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
                         .toString()).await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
                     final QubDependenciesListParameters parameters = new QubDependenciesListParameters(output, verbose, folder, environmentVariables);
@@ -129,8 +129,8 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava())
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
                     final QubDependenciesListParameters parameters = new QubDependenciesListParameters(output, verbose, folder, environmentVariables);
@@ -151,8 +151,8 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create()))
                         .toString()).await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
@@ -174,8 +174,8 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"),
                                 new ProjectSignature("d", "e", "f"),
@@ -200,8 +200,8 @@ public interface QubDependenciesListTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"),
                                 new ProjectSignature("d", "e", "f"),
@@ -229,15 +229,15 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("c")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"))))
                         .toString()).await();
@@ -264,22 +264,22 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("c")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("d", "e", "f").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("d")
                             .setProject("e")
                             .setVersion("f")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"),
                                 new ProjectSignature("d", "e", "f"))))
@@ -308,29 +308,29 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("c")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("d", "e", "f").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("d")
                             .setProject("e")
                             .setVersion("f")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("g", "h", "i").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("g")
                             .setProject("h")
                             .setVersion("i")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"),
                                 new ProjectSignature("d", "e", "f"),
@@ -361,24 +361,24 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("c")
-                            .setJava(new ProjectJSONJava()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("d", "e", "f"))))
                         .toString()).await();
                     qubFolder.getProjectJSONFile("d", "e", "f").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("d")
                             .setProject("e")
                             .setVersion("f")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"))))
                         .toString()).await();
@@ -406,32 +406,32 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("c")
-                            .setJava(new ProjectJSONJava()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("d", "e", "f"),
                                     new ProjectSignature("g", "h", "i"))))
                         .toString()).await();
                     qubFolder.getProjectJSONFile("d", "e", "f").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("d")
                             .setProject("e")
                             .setVersion("f")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("g", "h", "i").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("g")
                             .setProject("h")
                             .setVersion("i")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"))))
                         .toString()).await();
@@ -460,8 +460,8 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"))))
                         .toString()).await();
@@ -488,14 +488,14 @@ public interface QubDependenciesListTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "c").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("c")
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"))))
                         .toString()).await();

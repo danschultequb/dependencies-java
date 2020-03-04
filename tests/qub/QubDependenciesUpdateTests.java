@@ -109,7 +109,7 @@ public interface QubDependenciesUpdateTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
                         .toString()).await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
                     final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
@@ -130,8 +130,8 @@ public interface QubDependenciesUpdateTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava())
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
                     final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
@@ -152,8 +152,8 @@ public interface QubDependenciesUpdateTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create()))
                         .toString()).await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
@@ -175,8 +175,8 @@ public interface QubDependenciesUpdateTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"),
                                 new ProjectSignature("d", "e", "f"),
@@ -201,8 +201,8 @@ public interface QubDependenciesUpdateTests
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
                     final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "c"),
                                 new ProjectSignature("d", "e", "f"),
@@ -230,43 +230,43 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("2")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("d", "e", "3").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("d")
                             .setProject("e")
                             .setVersion("3")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("g", "h", "4").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("g")
                             .setProject("h")
                             .setVersion("4")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("g", "h", "5").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("g")
                             .setProject("h")
                             .setVersion("5")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"),
                                 new ProjectSignature("d", "e", "3"),
@@ -287,8 +287,8 @@ public interface QubDependenciesUpdateTests
                             "  g/h@4 - Updated to g/h@5"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "2"),
                                     new ProjectSignature("d", "e", "3"),
@@ -305,17 +305,17 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("d", "e", "1"))))
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -332,8 +332,8 @@ public interface QubDependenciesUpdateTests
                             "  a/b@1 - No updates"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -348,22 +348,22 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     qubFolder.getProjectJSONFile("d", "e", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("d")
                             .setProject("e")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"),
                                 new ProjectSignature("d", "e", "1"))))
@@ -382,8 +382,8 @@ public interface QubDependenciesUpdateTests
                             "  d/e@1 - No updates"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1"),
                                     new ProjectSignature("d", "e", "1")))),
@@ -399,8 +399,8 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -417,8 +417,8 @@ public interface QubDependenciesUpdateTests
                             "  a/b@1 - Not Found"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -433,15 +433,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -459,14 +459,14 @@ public interface QubDependenciesUpdateTests
                             "  a/b@1 - No updates"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
                 });
 
-                runner.test("with project.json with --intellij=true and no IntelliJ project files", (Test test) ->
+                runner.test("with project.json with --intellij=true and no IntelliJ module files", (Test test) ->
                 {
                     final InMemoryCharacterStream output = new InMemoryCharacterStream();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
@@ -475,15 +475,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -501,8 +501,8 @@ public interface QubDependenciesUpdateTests
                             "  a/b@1 - No updates"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -517,15 +517,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -547,12 +547,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  Invalid Intellij Module file: /project/project.iml"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -567,15 +567,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -597,12 +597,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -617,15 +617,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -648,12 +648,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -668,15 +668,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -700,12 +700,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -720,15 +720,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -752,12 +752,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -772,15 +772,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -805,12 +805,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -825,15 +825,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -859,12 +859,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -879,15 +879,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -914,12 +914,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -934,15 +934,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -970,12 +970,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -990,15 +990,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -1027,12 +1027,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1047,15 +1047,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -1084,12 +1084,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1104,15 +1104,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -1141,13 +1141,13 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  /other/folder/thing.jar - No updates",
                             "  a/b@1 - Added"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1162,15 +1162,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -1199,12 +1199,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - No updates"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1238,15 +1238,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("2")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "2"))))
                         .toString()).await();
@@ -1275,12 +1275,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@2 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Updated to a/b@2"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "2")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1314,15 +1314,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("2")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "2"))))
                         .toString()).await();
@@ -1351,12 +1351,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@2 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@3 - Updated to a/b@2"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "2")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1390,15 +1390,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("1")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "1"))))
                         .toString()).await();
@@ -1431,12 +1431,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@1 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - No updates"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "1")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1470,15 +1470,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("2")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "2"))))
                         .toString()).await();
@@ -1511,12 +1511,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@2 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@1 - Updated to a/b@2"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "2")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1550,15 +1550,15 @@ public interface QubDependenciesUpdateTests
                     final Folder rootFolder = fileSystem.getFolder("/").await();
                     final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
                     qubFolder.getProjectJSONFile("a", "b", "2").await().setContentsAsString(
-                        new ProjectJSON()
+                        ProjectJSON.create()
                             .setPublisher("a")
                             .setProject("b")
                             .setVersion("2")
-                            .setJava(new ProjectJSONJava())
+                            .setJava(ProjectJSONJava.create())
                         .toString()).await();
                     final Folder folder = rootFolder.createFolder("project/").await();
-                    folder.setFileContentsAsString("project.json", new ProjectJSON()
-                        .setJava(new ProjectJSONJava()
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
                             .setDependencies(Iterable.create(
                                 new ProjectSignature("a", "b", "2"))))
                         .toString()).await();
@@ -1591,12 +1591,12 @@ public interface QubDependenciesUpdateTests
                             "Updating dependencies for /project/...",
                             "Found 1 dependency:",
                             "  a/b@2 - No updates",
-                            "Updating IntelliJ project files...",
+                            "Updating IntelliJ module files...",
                             "  a/b@3 - Updated to a/b@2"),
                         Strings.getLines(output.getText().await()));
                     test.assertEqual(
-                        new ProjectJSON()
-                            .setJava(new ProjectJSONJava()
+                        ProjectJSON.create()
+                            .setJava(ProjectJSONJava.create()
                                 .setDependencies(Iterable.create(
                                     new ProjectSignature("a", "b", "2")))),
                         ProjectJSON.parse(folder.getFile("project.json").await()).await());
@@ -1619,6 +1619,130 @@ public interface QubDependenciesUpdateTests
                                                     .setAttribute("url", "jar://" + qubFolder.getSourcesFile("a", "b", "2").await() + "!/")))))))
                             .toString(XMLFormat.pretty),
                         folder.getFileContentsAsString("project.iml").await());
+                });
+
+                runner.test("with project.json with --intellij=true and one IntelliJ project file with updated workspace.xml file", (Test test) ->
+                {
+                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
+                    final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
+                    fileSystem.createRoot("/").await();
+                    final Folder rootFolder = fileSystem.getFolder("/").await();
+                    final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
+                    qubFolder.getProjectJSONFile("a", "b", "1").await().setContentsAsString(
+                        ProjectJSON.create()
+                            .setPublisher("a")
+                            .setProject("b")
+                            .setVersion("1")
+                            .setJava(ProjectJSONJava.create())
+                        .toString()).await();
+                    qubFolder.getProjectJSONFile("qub", "test-java", "2").await().setContentsAsString(
+                        ProjectJSON.create()
+                            .setPublisher("qub")
+                            .setProject("test-java")
+                            .setVersion("2")
+                            .setJava(ProjectJSONJava.create())
+                        .toString()).await();
+                    final Folder folder = rootFolder.createFolder("project/").await();
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setPublisher("x")
+                        .setProject("y")
+                        .setVersion("3")
+                        .setJava(ProjectJSONJava.create()
+                            .setDependencies(Iterable.create(
+                                new ProjectSignature("a", "b", "1"))))
+                        .toString())
+                        .await();
+                    folder.setFileContentsAsString("project.iml", XMLDocument.create()
+                        .setDeclaration(XMLDeclaration.create()
+                            .setVersion("1.0")
+                            .setEncoding("UTF-8"))
+                        .setRoot(XMLElement.create("module"))
+                        .toString())
+                        .await();
+                    folder.setFileContentsAsString(".idea/workspace.xml", XMLDocument.create()
+                        .setDeclaration(XMLDeclaration.create()
+                            .setVersion("1.0")
+                            .setEncoding("UTF-8"))
+                        .setRoot(XMLElement.create("project"))
+                        .toString(XMLFormat.pretty))
+                        .await();
+                    folder.createFile("tests/my/CodeTests.java").await();
+                    final EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                        .set("QUB_HOME", qubFolder.toString());
+                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables)
+                        .setIntellij(true);
+
+                    test.assertEqual(0, QubDependenciesUpdate.run(parameters));
+
+                    test.assertEqual(
+                        Iterable.create(
+                            "Updating dependencies for /project/...",
+                            "Found 1 dependency:",
+                            "  a/b@1 - No updates",
+                            "Updating IntelliJ module files...",
+                            "  a/b@1 - Added",
+                            "Updating IntelliJ workspace file..."),
+                        Strings.getLines(output.getText().await()));
+                    test.assertEqual(
+                        ProjectJSON.create()
+                            .setPublisher("x")
+                            .setProject("y")
+                            .setVersion("3")
+                            .setJava(ProjectJSONJava.create()
+                                .setDependencies(Iterable.create(
+                                    new ProjectSignature("a", "b", "1")))),
+                        ProjectJSON.parse(folder.getFile("project.json").await()).await());
+                    test.assertEqual(
+                        XMLDocument.create()
+                            .setDeclaration(XMLDeclaration.create()
+                                .setVersion("1.0")
+                                .setEncoding("UTF-8"))
+                            .setRoot(XMLElement.create("module")
+                                .addChild(XMLElement.create("component")
+                                    .setAttribute("name", "NewModuleRootManager")
+                                    .addChild(XMLElement.create("orderEntry")
+                                        .setAttribute("type", "module-library")
+                                        .addChild(XMLElement.create("library")
+                                            .addChild(XMLElement.create("CLASSES")
+                                                .addChild(XMLElement.create("root")
+                                                    .setAttribute("url", "jar://" + qubFolder.getCompiledSourcesFile("a", "b", "1").await() + "!/")))
+                                            .addChild(XMLElement.create("JAVADOC"))
+                                            .addChild(XMLElement.create("SOURCES")
+                                                .addChild(XMLElement.create("root")
+                                                    .setAttribute("url", "jar://" + qubFolder.getSourcesFile("a", "b", "1").await() + "!/")))))))
+                            .toString(XMLFormat.pretty),
+                        folder.getFileContentsAsString("project.iml").await());
+                    test.assertEqual(
+                        XMLDocument.create()
+                            .setDeclaration(XMLDeclaration.create()
+                                .setVersion("1.0")
+                                .setEncoding("UTF-8"))
+                            .setRoot(XMLElement.create("project")
+                                .addChild(XMLElement.create("component")
+                                    .setAttribute("name", "RunManager")
+                                    .addChild(XMLElement.create("configuration")
+                                        .setAttribute("type", "Application")
+                                        .setAttribute("factoryName", "Application")
+                                        .setAttribute("name", "my.CodeTests")
+                                        .addChild(XMLElement.create("method")
+                                            .setAttribute("v", "2")
+                                            .addChild(XMLElement.create("option")
+                                                .setAttribute("name", "Make")
+                                                .setAttribute("enabled", "true")))
+                                        .addChild(XMLElement.create("option")
+                                            .setAttribute("name", "MAIN_CLASS_NAME")
+                                            .setAttribute("value", "qub.ConsoleTestRunner"))
+                                        .addChild(XMLElement.create("module")
+                                            .setAttribute("name", "y"))
+                                        .addChild(XMLElement.create("option")
+                                            .setAttribute("name", "PROGRAM_PARAMETERS")
+                                            .setAttribute("value", "my.CodeTests"))
+                                        .addChild(XMLElement.create("option")
+                                            .setAttribute("name", "VM_PARAMETERS")
+                                            .setAttribute("value", "-classpath $PROJECT_DIR$/outputs;/qub/qub/test-java/versions/2/test-java.jar;/qub/a/b/versions/1/b.jar")))))
+                            .toString(XMLFormat.pretty),
+                        folder.getFileContentsAsString(".idea/workspace.xml").await());
                 });
             });
         });
