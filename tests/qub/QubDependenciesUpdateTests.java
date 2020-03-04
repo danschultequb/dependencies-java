@@ -123,51 +123,6 @@ public interface QubDependenciesUpdateTests
                         Strings.getLines(output.getText().await()));
                 });
 
-                runner.test("with project.json with no dependencies property", (Test test) ->
-                {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
-                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
-                    final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
-                    fileSystem.createRoot("/").await();
-                    final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
-                        .setJava(ProjectJSONJava.create())
-                        .toString()).await();
-                    final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
-
-                    test.assertEqual(0, QubDependenciesUpdate.run(parameters));
-
-                    test.assertEqual(
-                        Iterable.create(
-                            "Updating dependencies for /project/...",
-                            "No dependencies found in /project/project.json."),
-                        Strings.getLines(output.getText().await()));
-                });
-
-                runner.test("with project.json with empty dependencies property", (Test test) ->
-                {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
-                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
-                    final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
-                    fileSystem.createRoot("/").await();
-                    final Folder folder = fileSystem.createFolder("/project/").await();
-                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
-                        .setJava(ProjectJSONJava.create()
-                            .setDependencies(Iterable.create()))
-                        .toString()).await();
-                    final EnvironmentVariables environmentVariables = new EnvironmentVariables();
-                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
-
-                    test.assertEqual(0, QubDependenciesUpdate.run(parameters));
-
-                    test.assertEqual(
-                        Iterable.create(
-                            "Updating dependencies for /project/...",
-                            "No dependencies found in /project/project.json."),
-                        Strings.getLines(output.getText().await()));
-                });
-
                 runner.test("with project.json with no QUB_HOME environment variable", (Test test) ->
                 {
                     final InMemoryCharacterStream output = new InMemoryCharacterStream();
@@ -218,6 +173,53 @@ public interface QubDependenciesUpdateTests
                         Iterable.create(
                             "Updating dependencies for /project/...",
                             "Can't discover transitive dependencies if the QUB_HOME environment variable is not rooted."),
+                        Strings.getLines(output.getText().await()));
+                });
+
+                runner.test("with project.json with no dependencies property", (Test test) ->
+                {
+                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
+                    final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
+                    fileSystem.createRoot("/").await();
+                    final Folder folder = fileSystem.createFolder("/project/").await();
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create())
+                        .toString()).await();
+                    final EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                        .set("QUB_HOME", "/qub");
+                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
+
+                    test.assertEqual(0, QubDependenciesUpdate.run(parameters));
+
+                    test.assertEqual(
+                        Iterable.create(
+                            "Updating dependencies for /project/...",
+                            "Found 0 dependencies."),
+                        Strings.getLines(output.getText().await()));
+                });
+
+                runner.test("with project.json with empty dependencies property", (Test test) ->
+                {
+                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
+                    final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
+                    fileSystem.createRoot("/").await();
+                    final Folder folder = fileSystem.createFolder("/project/").await();
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setJava(ProjectJSONJava.create()
+                            .setDependencies(Iterable.create()))
+                        .toString()).await();
+                    final EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                        .set("QUB_HOME", "/qub");
+                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables);
+
+                    test.assertEqual(0, QubDependenciesUpdate.run(parameters));
+
+                    test.assertEqual(
+                        Iterable.create(
+                            "Updating dependencies for /project/...",
+                            "Found 0 dependencies."),
                         Strings.getLines(output.getText().await()));
                 });
 
@@ -1621,7 +1623,108 @@ public interface QubDependenciesUpdateTests
                         folder.getFileContentsAsString("project.iml").await());
                 });
 
-                runner.test("with project.json with --intellij=true and one IntelliJ project file with updated workspace.xml file", (Test test) ->
+                runner.test("with project.json with --intellij=true, no dependencies, and workspace.xml file", (Test test) ->
+                {
+                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
+                    final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
+                    fileSystem.createRoot("/").await();
+                    final Folder rootFolder = fileSystem.getFolder("/").await();
+                    final QubFolder qubFolder = QubFolder.get(rootFolder.getFolder("qub").await());
+                    qubFolder.getProjectJSONFile("qub", "test-java", "2").await().setContentsAsString(
+                        ProjectJSON.create()
+                            .setPublisher("qub")
+                            .setProject("test-java")
+                            .setVersion("2")
+                            .setJava(ProjectJSONJava.create())
+                        .toString()).await();
+                    final Folder folder = rootFolder.createFolder("project/").await();
+                    folder.setFileContentsAsString("project.json", ProjectJSON.create()
+                        .setPublisher("x")
+                        .setProject("y")
+                        .setVersion("3")
+                        .setJava(ProjectJSONJava.create())
+                        .toString())
+                        .await();
+                    folder.setFileContentsAsString("project.iml", XMLDocument.create()
+                        .setDeclaration(XMLDeclaration.create()
+                            .setVersion("1.0")
+                            .setEncoding("UTF-8"))
+                        .setRoot(XMLElement.create("module"))
+                        .toString())
+                        .await();
+                    folder.setFileContentsAsString(".idea/workspace.xml", XMLDocument.create()
+                        .setDeclaration(XMLDeclaration.create()
+                            .setVersion("1.0")
+                            .setEncoding("UTF-8"))
+                        .setRoot(XMLElement.create("project"))
+                        .toString(XMLFormat.pretty))
+                        .await();
+                    folder.createFile("tests/my/CodeTests.java").await();
+                    final EnvironmentVariables environmentVariables = new EnvironmentVariables()
+                        .set("QUB_HOME", qubFolder.toString());
+                    final QubDependenciesUpdateParameters parameters = new QubDependenciesUpdateParameters(output, verbose, folder, environmentVariables)
+                        .setIntellij(true);
+
+                    test.assertEqual(0, QubDependenciesUpdate.run(parameters));
+
+                    test.assertEqual(
+                        Iterable.create(
+                            "Updating dependencies for /project/...",
+                            "Found 0 dependencies.",
+                            "Updating IntelliJ module files...",
+                            "Updating IntelliJ workspace file..."),
+                        Strings.getLines(output.getText().await()));
+                    test.assertEqual(
+                        ProjectJSON.create()
+                            .setPublisher("x")
+                            .setProject("y")
+                            .setVersion("3")
+                            .setJava(ProjectJSONJava.create()),
+                        ProjectJSON.parse(folder.getFile("project.json").await()).await());
+                    test.assertEqual(
+                        XMLDocument.create()
+                            .setDeclaration(XMLDeclaration.create()
+                                .setVersion("1.0")
+                                .setEncoding("UTF-8"))
+                            .setRoot(XMLElement.create("module")
+                                .addChild(XMLElement.create("component")
+                                    .setAttribute("name", "NewModuleRootManager")))
+                            .toString(XMLFormat.pretty),
+                        folder.getFileContentsAsString("project.iml").await());
+                    test.assertEqual(
+                        XMLDocument.create()
+                            .setDeclaration(XMLDeclaration.create()
+                                .setVersion("1.0")
+                                .setEncoding("UTF-8"))
+                            .setRoot(XMLElement.create("project")
+                                .addChild(XMLElement.create("component")
+                                    .setAttribute("name", "RunManager")
+                                    .addChild(XMLElement.create("configuration")
+                                        .setAttribute("type", "Application")
+                                        .setAttribute("factoryName", "Application")
+                                        .setAttribute("name", "my.CodeTests")
+                                        .addChild(XMLElement.create("method")
+                                            .setAttribute("v", "2")
+                                            .addChild(XMLElement.create("option")
+                                                .setAttribute("name", "Make")
+                                                .setAttribute("enabled", "true")))
+                                        .addChild(XMLElement.create("option")
+                                            .setAttribute("name", "MAIN_CLASS_NAME")
+                                            .setAttribute("value", "qub.ConsoleTestRunner"))
+                                        .addChild(XMLElement.create("module")
+                                            .setAttribute("name", "y"))
+                                        .addChild(XMLElement.create("option")
+                                            .setAttribute("name", "PROGRAM_PARAMETERS")
+                                            .setAttribute("value", "my.CodeTests"))
+                                        .addChild(XMLElement.create("option")
+                                            .setAttribute("name", "VM_PARAMETERS")
+                                            .setAttribute("value", "-classpath $PROJECT_DIR$/outputs;/qub/qub/test-java/versions/2/test-java.jar")))))
+                            .toString(XMLFormat.pretty),
+                        folder.getFileContentsAsString(".idea/workspace.xml").await());
+                });
+
+                runner.test("with project.json with --intellij=true, dependencies, and workspace.xml file", (Test test) ->
                 {
                     final InMemoryCharacterStream output = new InMemoryCharacterStream();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
