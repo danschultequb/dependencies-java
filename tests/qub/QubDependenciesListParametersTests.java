@@ -13,7 +13,7 @@ public interface QubDependenciesListParametersTests
                 runner.test("with null output", (Test test) ->
                 {
                     final InMemoryCharacterStream output = null;
-                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, new InMemoryCharacterStream());
+                    final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, InMemoryCharacterStream.create());
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
@@ -23,7 +23,7 @@ public interface QubDependenciesListParametersTests
 
                 runner.test("with null verbose", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterStream output = InMemoryCharacterStream.create();
                     final VerboseCharacterWriteStream verbose = null;
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
@@ -34,7 +34,7 @@ public interface QubDependenciesListParametersTests
 
                 runner.test("with null folder", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterStream output = InMemoryCharacterStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final Folder folder = null;
                     final EnvironmentVariables environmentVariables = new EnvironmentVariables();
@@ -44,7 +44,7 @@ public interface QubDependenciesListParametersTests
 
                 runner.test("with null environmentVariables", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterStream output = InMemoryCharacterStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();
@@ -55,7 +55,7 @@ public interface QubDependenciesListParametersTests
 
                 runner.test("with valid arguments", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterStream output = InMemoryCharacterStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     final Folder folder = fileSystem.getFolder("/").await();

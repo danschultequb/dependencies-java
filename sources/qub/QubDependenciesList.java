@@ -22,7 +22,7 @@ public interface QubDependenciesList
         {
             profilerParameter.await();
 
-            final CharacterWriteStream output = process.getOutputCharacterWriteStream();
+            final CharacterWriteStream output = process.getOutputWriteStream();
             final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
             final Folder folder = process.getCurrentFolder().await();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
@@ -93,7 +93,7 @@ public interface QubDependenciesList
                             final QubFolder qubFolder = QubFolder.get(folder.getFileSystem().getFolder(qubHomePath).await());
                             final int dependencyCount = dependencies.getCount();
                             output.writeLine("Found " + dependencyCount + " " + (dependencyCount == 1 ? "dependency" : "dependencies") + ":").await();
-                            final IndentedCharacterWriteStream indentedOutput = new IndentedCharacterWriteStream(output);
+                            final IndentedCharacterWriteStream indentedOutput = IndentedCharacterWriteStream.create(output);
                             for (final ProjectSignature dependency : dependencies)
                             {
                                 QubDependenciesList.writeDependencyTree(indentedOutput, dependency, qubFolder);

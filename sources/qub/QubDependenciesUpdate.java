@@ -24,7 +24,7 @@ public interface QubDependenciesUpdate
         {
             profilerParameter.await();
 
-            final CharacterWriteStream output = process.getOutputCharacterWriteStream();
+            final CharacterWriteStream output = process.getOutputWriteStream();
             final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
             final Folder folder = process.getCurrentFolder().await();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
@@ -92,7 +92,7 @@ public interface QubDependenciesUpdate
                         final Iterable<ProjectSignature> dependencies = projectJSONJava.getDependencies();
                         final int dependencyCount = dependencies.getCount();
                         output.writeLine("Found " + dependencyCount + " " + (dependencyCount == 1 ? "dependency" : "dependencies") + (dependencyCount == 0 ? "." : ":")).await();
-                        final IndentedCharacterWriteStream indentedOutput = new IndentedCharacterWriteStream(output);
+                        final IndentedCharacterWriteStream indentedOutput = IndentedCharacterWriteStream.create(output);
                         final List<ProjectSignature> newDependencies = List.create();
                         indentedOutput.indent(() ->
                         {
@@ -282,6 +282,7 @@ public interface QubDependenciesUpdate
                                             .toString());
                                     }
                                     final String vmParametersString = vmParameters.toString(true);
+                                    final String outputFolderProgramParameter = "--output-folder=" + folder.getFolder("outputs").await();
 
                                     final List<IntellijWorkspaceRunConfiguration> runConfigurationsToRemove = List.create();
                                     for (final IntellijWorkspaceRunConfiguration runConfiguration : intellijWorkspace.getRunConfigurations())
@@ -299,7 +300,7 @@ public interface QubDependenciesUpdate
                                             runConfiguration.setFactoryName("Application");
                                             runConfiguration.setMainClassFullName("qub.ConsoleTestRunner");
                                             runConfiguration.setModuleName(projectJSON.getProject());
-                                            runConfiguration.setProgramParameters(runConfigurationName);
+                                            runConfiguration.setProgramParameters(outputFolderProgramParameter + " " + runConfigurationName);
                                             runConfiguration.setVmParameters(vmParametersString);
                                         }
                                     }
@@ -317,7 +318,7 @@ public interface QubDependenciesUpdate
                                             .setFactoryName("Application")
                                             .setMainClassFullName("qub.ConsoleTestRunner")
                                             .setModuleName(projectJSON.getProject())
-                                            .setProgramParameters(fullTestClassNameToAdd)
+                                            .setProgramParameters(outputFolderProgramParameter + " " + fullTestClassNameToAdd)
                                             .setVmParameters(vmParametersString));
                                     }
 

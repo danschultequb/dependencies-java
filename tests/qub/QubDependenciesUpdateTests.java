@@ -20,8 +20,8 @@ public interface QubDependenciesUpdateTests
                 {
                     try (final QubProcess process = QubProcess.create())
                     {
-                        final InMemoryCharacterStream output = new InMemoryCharacterStream();
-                        process.setOutputCharacterWriteStream(output);
+                        final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
+                        process.setOutputWriteStream(output);
 
                         final QubDependenciesUpdateParameters parameters = QubDependenciesUpdate.getParameters(process);
                         test.assertNotNull(parameters);
@@ -36,8 +36,8 @@ public interface QubDependenciesUpdateTests
                 {
                     try (final QubProcess process = QubProcess.create("-?"))
                     {
-                        final InMemoryCharacterStream output = new InMemoryCharacterStream();
-                        process.setOutputCharacterWriteStream(output);
+                        final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
+                        process.setOutputWriteStream(output);
 
                         final QubDependenciesUpdateParameters parameters = QubDependenciesUpdate.getParameters(process);
                         test.assertNull(parameters);
@@ -66,7 +66,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with non-existing folder", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -85,7 +85,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with no project.json", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -104,7 +104,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with no java property", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -125,7 +125,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with no QUB_HOME environment variable", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -151,7 +151,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with relative QUB_HOME environment variable", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -178,7 +178,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with no dependencies property", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -201,7 +201,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with empty dependencies property", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -225,7 +225,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with three dependencies with mixed updates", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -300,7 +300,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with one up-to-date dependency", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -343,7 +343,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with two up-to-date dependencies", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -394,7 +394,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with one dependency that doesn't exist", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -428,7 +428,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=false and one up-to-date dependency", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -470,7 +470,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and no IntelliJ module files", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -512,7 +512,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with no module root element", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -562,7 +562,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with no component element", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -612,7 +612,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with no orderEntry element", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -663,7 +663,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with non-orderEntry element", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -715,7 +715,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with orderEntry element with no type attribute", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -767,7 +767,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with no library elements", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -820,7 +820,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with no CLASSES elements", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -874,7 +874,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with no root elements", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -929,7 +929,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with root element with no url attribute", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -985,7 +985,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with root element with empty url attribute", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1042,7 +1042,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with root element with non-\"jar://\" url attribute", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1099,7 +1099,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with root element with jar url attribute that isn't under the qub folder", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1157,7 +1157,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with up-to-date dependency with CLASSES", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1233,7 +1233,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with older dependency with CLASSES", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1309,7 +1309,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with newer dependency with CLASSES", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1385,7 +1385,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with up-to-date dependency with CLASSES and SOURCES", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1465,7 +1465,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with older dependency with CLASSES and SOURCES", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1545,7 +1545,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true and one IntelliJ project file with newer dependency with CLASSES and SOURCES", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1625,7 +1625,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true, no dependencies, and workspace.xml file", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1716,7 +1716,7 @@ public interface QubDependenciesUpdateTests
                                             .setAttribute("name", "y"))
                                         .addChild(XMLElement.create("option")
                                             .setAttribute("name", "PROGRAM_PARAMETERS")
-                                            .setAttribute("value", "my.CodeTests"))
+                                            .setAttribute("value", "--output-folder=/project/outputs my.CodeTests"))
                                         .addChild(XMLElement.create("option")
                                             .setAttribute("name", "VM_PARAMETERS")
                                             .setAttribute("value", "-classpath $PROJECT_DIR$/outputs;/qub/qub/test-java/versions/2/test-java.jar")))))
@@ -1726,7 +1726,7 @@ public interface QubDependenciesUpdateTests
 
                 runner.test("with project.json with --intellij=true, dependencies, and workspace.xml file", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     final VerboseCharacterWriteStream verbose = new VerboseCharacterWriteStream(false, output);
                     final InMemoryFileSystem fileSystem = new InMemoryFileSystem(test.getClock());
                     fileSystem.createRoot("/").await();
@@ -1840,7 +1840,7 @@ public interface QubDependenciesUpdateTests
                                             .setAttribute("name", "y"))
                                         .addChild(XMLElement.create("option")
                                             .setAttribute("name", "PROGRAM_PARAMETERS")
-                                            .setAttribute("value", "my.CodeTests"))
+                                            .setAttribute("value", "--output-folder=/project/outputs my.CodeTests"))
                                         .addChild(XMLElement.create("option")
                                             .setAttribute("name", "VM_PARAMETERS")
                                             .setAttribute("value", "-classpath $PROJECT_DIR$/outputs;/qub/qub/test-java/versions/2/test-java.jar;/qub/a/b/versions/1/b.jar")))))

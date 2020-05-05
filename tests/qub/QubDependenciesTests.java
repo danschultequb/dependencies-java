@@ -27,10 +27,10 @@ public interface QubDependenciesTests
 
                 runner.test("with no action", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     try (final QubProcess process = QubProcess.create())
                     {
-                        process.setOutputCharacterWriteStream(output);
+                        process.setOutputWriteStream(output);
 
                         QubDependencies.run(process);
 
@@ -51,10 +51,10 @@ public interface QubDependenciesTests
 
                 runner.test("with -?", (Test test) ->
                 {
-                    final InMemoryCharacterStream output = new InMemoryCharacterStream();
+                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
                     try (final QubProcess process = QubProcess.create("-?"))
                     {
-                        process.setOutputCharacterWriteStream(output);
+                        process.setOutputWriteStream(output);
 
                         QubDependencies.run(process);
 
