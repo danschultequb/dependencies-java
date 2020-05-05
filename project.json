@@ -1,7 +1,7 @@
 {
   "publisher": "qub",
   "project": "dependencies-java",
-  "version": "9",
+  "version": "10",
   "java": {
     "mainClass": "qub.QubDependencies",
     "shortcutName": "qub-dependencies",

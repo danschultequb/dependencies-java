@@ -282,7 +282,7 @@ public interface QubDependenciesUpdate
                                             .toString());
                                     }
                                     final String vmParametersString = vmParameters.toString(true);
-                                    final String outputFolderProgramParameter = "--output-folder=" + folder.getFolder("outputs").await();
+                                    final String outputFolderProgramParameter = "--output-folder=$PROJECT_DIR$/outputs";
 
                                     final List<IntellijWorkspaceRunConfiguration> runConfigurationsToRemove = List.create();
                                     for (final IntellijWorkspaceRunConfiguration runConfiguration : intellijWorkspace.getRunConfigurations())
