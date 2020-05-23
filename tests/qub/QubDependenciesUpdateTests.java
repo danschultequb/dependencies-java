@@ -28,7 +28,7 @@ public interface QubDependenciesUpdateTests
                         test.assertSame(output, parameters.getOutput());
                         test.assertEqual("", output.getText().await());
                         test.assertNotNull(parameters.getVerbose());
-                        test.assertEqual(process.getCurrentFolder().await(), parameters.getFolder());
+                        test.assertEqual(process.getCurrentFolder(), parameters.getFolder());
                     }
                 });
 

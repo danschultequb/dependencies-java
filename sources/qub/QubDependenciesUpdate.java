@@ -26,7 +26,7 @@ public interface QubDependenciesUpdate
 
             final CharacterWriteStream output = process.getOutputWriteStream();
             final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
-            final Folder folder = process.getCurrentFolder().await();
+            final Folder folder = process.getCurrentFolder();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
             final boolean intellij = intellijParameter.getValue().await();
 

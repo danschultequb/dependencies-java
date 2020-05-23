@@ -24,7 +24,7 @@ public interface QubDependenciesList
 
             final CharacterWriteStream output = process.getOutputWriteStream();
             final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
-            final Folder folder = process.getCurrentFolder().await();
+            final Folder folder = process.getCurrentFolder();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
 
             result = new QubDependenciesListParameters(output, verbose, folder, environmentVariables);
