@@ -9,14 +9,14 @@ public interface QubDependencies
     {
         PreCondition.assertNotNull(args, "args");
 
-        QubProcess.run(args, QubDependencies::run);
+        DesktopProcess.run(args, QubDependencies::run);
     }
 
-    static void run(QubProcess process)
+    static void run(DesktopProcess process)
     {
         PreCondition.assertNotNull(process, "process");
 
-        final CommandLineActions<QubProcess> actions = process.<QubProcess>createCommandLineActions()
+        final CommandLineActions actions = process.createCommandLineActions()
             .setApplicationName(QubDependencies.applicationName)
             .setApplicationDescription(QubDependencies.applicationDescription);
 

@@ -3,12 +3,12 @@ package qub;
 public class QubDependenciesUpdateParameters
 {
     private final CharacterWriteStream output;
-    private final VerboseCharacterWriteStream verbose;
+    private final VerboseCharacterToByteWriteStream verbose;
     private final Folder folder;
     private final EnvironmentVariables environmentVariables;
     private boolean intellij;
 
-    public QubDependenciesUpdateParameters(CharacterWriteStream output, VerboseCharacterWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
+    public QubDependenciesUpdateParameters(CharacterWriteStream output, VerboseCharacterToByteWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
     {
         PreCondition.assertNotNull(output, "output");
         PreCondition.assertNotNull(verbose, "verbose");
@@ -27,7 +27,7 @@ public class QubDependenciesUpdateParameters
         return this.output;
     }
 
-    public VerboseCharacterWriteStream getVerbose()
+    public VerboseCharacterToByteWriteStream getVerbose()
     {
         return this.verbose;
     }

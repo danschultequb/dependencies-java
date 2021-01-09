@@ -17,7 +17,7 @@ public interface QubDependenciesTests
                 });
             });
 
-            runner.testGroup("run(QubProcess)", () ->
+            runner.testGroup("run(FakeDesktopProcess)", () ->
             {
                 runner.test("with null", (Test test) ->
                 {
@@ -27,11 +27,8 @@ public interface QubDependenciesTests
 
                 runner.test("with no action", (Test test) ->
                 {
-                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
-                    try (final QubProcess process = QubProcess.create())
+                    try (final FakeDesktopProcess process = FakeDesktopProcess.create())
                     {
-                        process.setOutputWriteStream(output);
-
                         QubDependencies.run(process);
 
                         test.assertEqual(
@@ -39,23 +36,20 @@ public interface QubDependenciesTests
                                 "Usage: qub-dependencies [--action=]<action-name> [--help]",
                                 "  Perform operations on the dependencies of a project source folder.",
                                 "  --action(a): The name of the action to invoke.",
-                                "  --help(?): Show the help message for this application.",
+                                "  --help(?):   Show the help message for this application.",
                                 "",
                                 "Actions:",
-                                "  list: List the dependencies of a project.",
+                                "  list:   List the dependencies of a project.",
                                 "  update: Update the dependencies of a project."),
-                            Strings.getLines(output.getText().await()));
+                            Strings.getLines(process.getOutputWriteStream().getText().await()));
                         test.assertEqual(-1, process.getExitCode());
                     }
                 });
 
                 runner.test("with -?", (Test test) ->
                 {
-                    final InMemoryCharacterToByteStream output = InMemoryCharacterToByteStream.create();
-                    try (final QubProcess process = QubProcess.create("-?"))
+                    try (final FakeDesktopProcess process = FakeDesktopProcess.create("-?"))
                     {
-                        process.setOutputWriteStream(output);
-
                         QubDependencies.run(process);
 
                         test.assertEqual(
@@ -63,12 +57,12 @@ public interface QubDependenciesTests
                                 "Usage: qub-dependencies [--action=]<action-name> [--help]",
                                 "  Perform operations on the dependencies of a project source folder.",
                                 "  --action(a): The name of the action to invoke.",
-                                "  --help(?): Show the help message for this application.",
+                                "  --help(?):   Show the help message for this application.",
                                 "",
                                 "Actions:",
-                                "  list: List the dependencies of a project.",
+                                "  list:   List the dependencies of a project.",
                                 "  update: Update the dependencies of a project."),
-                            Strings.getLines(output.getText().await()));
+                            Strings.getLines(process.getOutputWriteStream().getText().await()));
                         test.assertEqual(-1, process.getExitCode());
                     }
                 });

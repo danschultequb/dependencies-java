@@ -3,11 +3,11 @@ package qub;
 public class QubDependenciesListParameters
 {
     private final CharacterWriteStream output;
-    private final VerboseCharacterWriteStream verbose;
+    private final VerboseCharacterToByteWriteStream verbose;
     private final Folder folder;
     private final EnvironmentVariables environmentVariables;
 
-    public QubDependenciesListParameters(CharacterWriteStream output, VerboseCharacterWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
+    public QubDependenciesListParameters(CharacterWriteStream output, VerboseCharacterToByteWriteStream verbose, Folder folder, EnvironmentVariables environmentVariables)
     {
         PreCondition.assertNotNull(output, "output");
         PreCondition.assertNotNull(verbose, "verbose");
@@ -25,7 +25,7 @@ public class QubDependenciesListParameters
         return this.output;
     }
 
-    public VerboseCharacterWriteStream getVerbose()
+    public VerboseCharacterToByteWriteStream getVerbose()
     {
         return this.verbose;
     }

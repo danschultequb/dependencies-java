@@ -5,7 +5,7 @@ public interface QubDependenciesList
     String actionName = "list";
     String actionDescription = "List the dependencies of a project.";
 
-    static QubDependenciesListParameters getParameters(QubProcess process)
+    static QubDependenciesListParameters getParameters(DesktopProcess process)
     {
         PreCondition.assertNotNull(process, "process");
 
@@ -23,7 +23,7 @@ public interface QubDependenciesList
             profilerParameter.await();
 
             final CharacterWriteStream output = process.getOutputWriteStream();
-            final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
+            final VerboseCharacterToByteWriteStream verbose = verboseParameter.getVerboseCharacterToByteWriteStream().await();
             final Folder folder = process.getCurrentFolder();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
 
@@ -40,7 +40,7 @@ public interface QubDependenciesList
         int exitCode = 0;
 
         final CharacterWriteStream output = parameters.getOutput();
-        final VerboseCharacterWriteStream verbose = parameters.getVerbose();
+        final VerboseCharacterToByteWriteStream verbose = parameters.getVerbose();
         final Folder folder = parameters.getFolder();
         final EnvironmentVariables environmentVariables = parameters.getEnvironmentVariables();
 

@@ -5,7 +5,7 @@ public interface QubDependenciesUpdate
     String actionName = "update";
     String actionDescription = "Update the dependencies of a project.";
 
-    static QubDependenciesUpdateParameters getParameters(QubProcess process)
+    static QubDependenciesUpdateParameters getParameters(DesktopProcess process)
     {
         PreCondition.assertNotNull(process, "process");
 
@@ -25,7 +25,7 @@ public interface QubDependenciesUpdate
             profilerParameter.await();
 
             final CharacterWriteStream output = process.getOutputWriteStream();
-            final VerboseCharacterWriteStream verbose = verboseParameter.getVerboseCharacterWriteStream().await();
+            final VerboseCharacterToByteWriteStream verbose = verboseParameter.getVerboseCharacterToByteWriteStream().await();
             final Folder folder = process.getCurrentFolder();
             final EnvironmentVariables environmentVariables = process.getEnvironmentVariables();
             final boolean intellij = intellijParameter.getValue().await();
@@ -44,7 +44,7 @@ public interface QubDependenciesUpdate
         int exitCode = 0;
 
         final CharacterWriteStream output = parameters.getOutput();
-        final VerboseCharacterWriteStream verbose = parameters.getVerbose();
+        final VerboseCharacterToByteWriteStream verbose = parameters.getVerbose();
         final Folder folder = parameters.getFolder();
         final EnvironmentVariables environmentVariables = parameters.getEnvironmentVariables();
         final boolean intellij = parameters.getIntellij();
@@ -110,14 +110,15 @@ public interface QubDependenciesUpdate
                                 }
                                 else
                                 {
-                                    if (Comparer.equal(dependency.getVersion(), latestVersionFolder.getVersion()))
+                                    final VersionNumber latestVersion = latestVersionFolder.getVersion().await();
+                                    if (Comparer.equal(dependency.getVersion(), latestVersion))
                                     {
                                         newDependencies.add(dependency);
                                         indentedOutput.writeLine(" - No updates").await();
                                     }
                                     else
                                     {
-                                        final ProjectSignature newDependency = new ProjectSignature(dependency.getPublisher(), dependency.getProject(), latestVersionFolder.getVersion());
+                                        final ProjectSignature newDependency = ProjectSignature.create(dependency.getPublisher(), dependency.getProject(), latestVersion);
                                         newDependencies.add(newDependency);
                                         dependenciesChanged = true;
                                         indentedOutput.writeLine(" - Updated to " + newDependency).await();
@@ -136,7 +137,7 @@ public interface QubDependenciesUpdate
                         {
                             final Iterable<ProjectSignature> projectJsonTransitiveDependencies = projectJSONJava.getTransitiveDependencies(qubFolder).toList();
 
-                            final Iterable<File> intellijProjectFiles = folder.getFiles().await()
+                            final Iterable<File> intellijProjectFiles = folder.getFilesRecursively().await()
                                 .where((File file) -> Comparer.equal(file.getFileExtension(), ".iml"));
                             if (intellijProjectFiles.any())
                             {
@@ -187,7 +188,7 @@ public interface QubDependenciesUpdate
                                                         {
                                                             version = segments.get(3);
                                                         }
-                                                        final ProjectSignature currentQubDependency = new ProjectSignature(publisher, project, version);
+                                                        final ProjectSignature currentQubDependency = ProjectSignature.create(publisher, project, version);
 
                                                         final ProjectSignature newQubDependency = dependenciesToAddToModule.removeFirst(currentQubDependency::equalsIgnoreVersion);
                                                         if (newQubDependency == null)
@@ -259,7 +260,7 @@ public interface QubDependenciesUpdate
                                     final QubProjectVersionFolder qubTestLatestProjectVersionFolder = qubTestProjectFolder.getLatestProjectVersionFolder().await();
                                     final ProjectJSON qubTestProjectJson = ProjectJSON.parse(qubTestLatestProjectVersionFolder.getProjectJSONFile().await()).await();
                                     final ProjectJSONJava qubTestProjectJsonJava = qubTestProjectJson.getJava();
-                                    final ProjectSignature qubTestProjectSignature = new ProjectSignature("qub", "test-java", qubTestProjectJson.getVersion());
+                                    final ProjectSignature qubTestProjectSignature = ProjectSignature.create("qub", "test-java", qubTestProjectJson.getVersion());
                                     final List<ProjectSignature> runConfigurationDependencies = List.create(qubTestProjectSignature)
                                         .addAll(qubTestProjectJsonJava.getTransitiveDependencies(qubFolder));
 
