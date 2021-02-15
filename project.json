@@ -1,7 +1,7 @@
 {
   "publisher": "qub",
   "project": "dependencies-java",
-  "version": "12",
+  "version": "13",
   "java": {
     "mainClass": "qub.QubDependencies",
     "shortcutName": "qub-dependencies",
@@ -9,12 +9,12 @@
       {
         "publisher": "qub",
         "project": "projectjson-java",
-        "version": "82"
+        "version": "84"
       },
       {
         "publisher": "qub",
         "project": "intellij-java",
-        "version": "14"
+        "version": "15"
       }
     ]
   }

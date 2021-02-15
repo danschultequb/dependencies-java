@@ -284,6 +284,7 @@ public interface QubDependenciesUpdate
                                     }
                                     final String vmParametersString = vmParameters.toString(true);
                                     final String outputFolderProgramParameter = "--output-folder=$PROJECT_DIR$/outputs";
+                                    final String testJsonProgramParameter = "--testjson=false";
 
                                     final List<IntellijWorkspaceRunConfiguration> runConfigurationsToRemove = List.create();
                                     for (final IntellijWorkspaceRunConfiguration runConfiguration : intellijWorkspace.getRunConfigurations())
@@ -301,7 +302,7 @@ public interface QubDependenciesUpdate
                                             runConfiguration.setFactoryName("Application");
                                             runConfiguration.setMainClassFullName("qub.ConsoleTestRunner");
                                             runConfiguration.setModuleName(projectJSON.getProject());
-                                            runConfiguration.setProgramParameters(outputFolderProgramParameter + " " + runConfigurationName);
+                                            runConfiguration.setProgramParameters(Strings.join(' ', Iterable.create(outputFolderProgramParameter, testJsonProgramParameter, runConfigurationName)));
                                             runConfiguration.setVmParameters(vmParametersString);
                                         }
                                     }
@@ -319,7 +320,7 @@ public interface QubDependenciesUpdate
                                             .setFactoryName("Application")
                                             .setMainClassFullName("qub.ConsoleTestRunner")
                                             .setModuleName(projectJSON.getProject())
-                                            .setProgramParameters(outputFolderProgramParameter + " " + fullTestClassNameToAdd)
+                                            .setProgramParameters(Strings.join(' ', Iterable.create(outputFolderProgramParameter, testJsonProgramParameter, fullTestClassNameToAdd)))
                                             .setVmParameters(vmParametersString));
                                     }
 
